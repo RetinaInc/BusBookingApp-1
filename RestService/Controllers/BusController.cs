@@ -20,18 +20,21 @@ namespace RestService.Controllers
         }
         
         //get all locations
+        //Route: service/bus/locations
         [HttpGet]
         public IEnumerable<LocationDto> Locations()
         {
             return _busService.GetLocations();
         }
         //get all schedules
+        //Route: service/bus/schedules
         [HttpGet]
         public IEnumerable<ResultDto> Schedules()
         {
             return _busService.GetSchedules();
         }
         //search for schedules
+        //Route: service/bus/schedules/{from location id}/{to location id}/{departure time}
         [HttpGet]
         [Route("service/Bus/Schedules/{fromId}/{toId}/{departure}")]
         public IEnumerable<ResultDto> Search(int fromId, int toId, string departure)
@@ -45,6 +48,7 @@ namespace RestService.Controllers
             return _busService.SearchSchedules(query);
         }
         //get a specific schedule
+        //Route: service/bus/schedule/{id}
         [HttpGet]
         public SeatSelectionDto Schedule(int id)
         {
