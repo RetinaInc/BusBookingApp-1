@@ -6,11 +6,18 @@ namespace Service.Bus
 {
     public interface IBusService : IDisposable
     {
+        // get all schedules
         List<ResultDto> GetSchedules();
+        // get all locations
         List<LocationDto> GetLocations();
+        // search for schedules
         List<ResultDto> SearchSchedules(SearchDto query);
+        // get a specific schedule
         SeatSelectionDto GetSchedule(int scheduleId);
-        void BuyTicket(string seats, int scheduleId, string customer);
+        // order a ticket
         OrderDto Order(string seats, int scheduleId, string customer);
+        // buy a ticket
+        void BuyTicket(string seats, int scheduleId, string customer);
+        
     }
 }
