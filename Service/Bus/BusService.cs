@@ -9,21 +9,24 @@ namespace Service.Bus
 {
     public class BusService : IBusService
     {
+        //initialize UnitOfWork
         private readonly UnitOfWork _unitOfWork = new UnitOfWork();
 
+        //get all the locations
         public List<LocationDto> GetLocations()
         {
             var locations = _unitOfWork.LocationRepository.Get().OrderBy(l => l.Name).ToList();
             return locations.Select(location => new LocationDto {LocationId = location.LocationId, Name = location.Name}).ToList();
         }
+        //get all the schedules
         public List<ResultDto> GetSchedules()
         {
             var schedules = _unitOfWork.ScheduleRepository.Get();
-            var result = GetResult(schedules);
+            var result = ToResultDto(schedules);
             return result;
         }
-
-        public List<ResultDto> SearchBus(SearchDto searchBus)
+        //search for schedules based on given parameters
+        public List<ResultDto> SearchSchedules(SearchDto searchBus)
         {
             var schedules = _unitOfWork.ScheduleRepository.Get(
                 filter:
@@ -33,27 +36,11 @@ namespace Service.Bus
 
             // filter for date and time
             schedules = schedules.Where(s => s.DepartureTime.Date == searchBus.Departure.Date);
-            var result = GetResult(schedules);
+            var result = ToResultDto(schedules);
             return result;
         }
-
-        private List<ResultDto> GetResult(IEnumerable<Schedule> schedules)
-        {
-            return (from sched in schedules
-                    let soldSeats = _unitOfWork.TicketRepository.Get(filter: t => t.ScheduleId == sched.ScheduleId).Count()
-                    select new ResultDto
-                    {
-                        ScheduleId = sched.ScheduleId,
-                        Bus = sched.Company.Name + " - " + sched.BusType.Name,
-                        AvailableSeats = sched.BusType.SeatFormat.Seats.Count() - soldSeats,
-                        Departure = sched.DepartureTime,
-                        Description = sched.Description,
-                        JourneyFrom = sched.JourneyFrom.Name,
-                        JourneyTo = sched.JourneyTo.Name
-                    }).ToList();
-        }
-
-        public SeatSelectionDto GetSeats(int scheduleId)
+        //get a specific schedule and return it in a SeatSelection object
+        public SeatSelectionDto GetSchedule(int scheduleId)
         {
             var schedule = _unitOfWork.ScheduleRepository.GetById(scheduleId);
 
@@ -67,17 +54,28 @@ namespace Service.Bus
                                 }).ToList();
 
             //get the booked seats
+            //in a real scenario, we'd get the booked seats from the bus company api
             var bookedSeats =
                 _unitOfWork.TicketRepository.Get(filter: t => t.ScheduleId == scheduleId)
                     .ToList();
 
-            //if there are sold seats then update availableSeats
-            if (bookedSeats.Count > 0)
-                foreach (var seat in from bookedSeat in bookedSeats
-                                     from seat in seats
-                                     where seat.SeatNumber == bookedSeat.SeatNumber
-                                     select seat)
-                    seat.Available = false;
+            //if no seats are sold then return all the seats as available seats
+            if (bookedSeats.Count <= 0)
+                return new SeatSelectionDto
+                {
+                    ScheduleId = scheduleId,
+                    LocationInfo = schedule.JourneyFrom.Name + " to " + schedule.JourneyTo.Name,
+                    Departure = schedule.DepartureTime,
+                    BusInfo = schedule.Company.Name + " - " + schedule.BusType.Name,
+                    Seats = seats
+                };
+
+            //if one or more seats are sold then mark them as sold and return the rest
+            foreach (var seat in from bookedSeat in bookedSeats
+                from seat in seats
+                where seat.SeatNumber == bookedSeat.SeatNumber
+                select seat)
+                seat.Available = false;
 
             //return the results
             return new SeatSelectionDto
@@ -160,6 +158,22 @@ namespace Service.Bus
             _unitOfWork.Save();
         }
 
+        // this function converts given list of schedules to ResultDto objects
+        private List<ResultDto> ToResultDto(IEnumerable<Schedule> schedules)
+        {
+            return (from sched in schedules
+                    let soldSeats = _unitOfWork.TicketRepository.Get(filter: t => t.ScheduleId == sched.ScheduleId).Count()
+                    select new ResultDto
+                    {
+                        ScheduleId = sched.ScheduleId,
+                        Bus = sched.Company.Name + " - " + sched.BusType.Name,
+                        AvailableSeats = sched.BusType.SeatFormat.Seats.Count() - soldSeats,
+                        Departure = sched.DepartureTime,
+                        Description = sched.Description,
+                        JourneyFrom = sched.JourneyFrom.Name,
+                        JourneyTo = sched.JourneyTo.Name
+                    }).ToList();
+        }
 
         private bool _disposed = false;
         public void Dispose()

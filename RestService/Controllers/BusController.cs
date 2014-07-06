@@ -31,7 +31,7 @@ namespace RestService.Controllers
         [HttpPost]
         public IEnumerable<ResultDto> Search(SearchDto query)
         {
-            return _busService.SearchBus(query);
+            return _busService.SearchSchedules(query);
         }
 
         protected override void Dispose(bool disposing)
