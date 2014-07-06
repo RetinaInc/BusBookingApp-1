@@ -1,5 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
+using System.Web.Routing;
 using Service.Bus;
 using Service.BusDto;
 
@@ -28,9 +33,16 @@ namespace RestService.Controllers
             return _busService.GetLocations();
         }
 
-        [HttpPost]
-        public IEnumerable<ResultDto> Search(SearchDto query)
+        [HttpGet]
+        [Route("service/Bus/Schedules/{fromId}/{toId}/{departure}")]
+        public IEnumerable<ResultDto> Search(int fromId, int toId, string departure)
         {
+            var query = new SearchDto
+            {
+                JourneyFromId = fromId,
+                JourneyToId = toId,
+                Departure = DateTime.ParseExact(departure, "dd-MM-yyyy", null)
+            };
             return _busService.SearchSchedules(query);
         }
 
