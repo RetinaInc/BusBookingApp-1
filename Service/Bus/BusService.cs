@@ -43,6 +43,7 @@ namespace Service.Bus
         public SeatSelectionDto GetSchedule(int scheduleId)
         {
             var schedule = _unitOfWork.ScheduleRepository.GetById(scheduleId);
+            if (schedule == null) return null;
 
             //get all the seats in the schedule
             var seats = schedule.BusType.SeatFormat.Seats.

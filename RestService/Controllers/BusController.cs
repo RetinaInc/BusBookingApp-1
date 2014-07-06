@@ -14,25 +14,24 @@ namespace RestService.Controllers
     {
         // the bus service interface
         private readonly IBusService _busService;
-
         public BusController(IBusService busService)
         {
             _busService = busService;
         }
         
-        [HttpGet]
-        public IEnumerable<ResultDto> Schedules()
-        {
-            return _busService.GetSchedules();
-        }
-
-        //get list of locations
+        //get all locations
         [HttpGet]
         public IEnumerable<LocationDto> Locations()
         {
             return _busService.GetLocations();
         }
-
+        //get all schedules
+        [HttpGet]
+        public IEnumerable<ResultDto> Schedules()
+        {
+            return _busService.GetSchedules();
+        }
+        //search for schedules
         [HttpGet]
         [Route("service/Bus/Schedules/{fromId}/{toId}/{departure}")]
         public IEnumerable<ResultDto> Search(int fromId, int toId, string departure)
@@ -44,6 +43,12 @@ namespace RestService.Controllers
                 Departure = DateTime.ParseExact(departure, "dd-MM-yyyy", null)
             };
             return _busService.SearchSchedules(query);
+        }
+        //get a specific schedule
+        [HttpGet]
+        public SeatSelectionDto Schedule(int id)
+        {
+            return _busService.GetSchedule(id);
         }
 
         protected override void Dispose(bool disposing)
