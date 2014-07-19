@@ -6,7 +6,7 @@ namespace Service.Data
 {
     public class InitializeDb
     {
-        public static void InitializeBus(BusContext context)
+        public static void InitializeBus(AppDbContext context)
         {
             // create seats
             context.SeatFormats.AddOrUpdate(f => f.Name,

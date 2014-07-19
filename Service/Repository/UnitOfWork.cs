@@ -6,7 +6,7 @@ namespace Service.Repository
 {
     public class UnitOfWork : IDisposable
     {
-        private readonly BusContext _context = new BusContext();
+        private readonly AppDbContext _context = new AppDbContext();
         private GenericRepository<Company> _companyRepository;
         private GenericRepository<BusType> _busTypeRepository;        
         private GenericRepository<SeatFormat> _seatFormatRepository;

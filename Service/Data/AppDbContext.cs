@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Data.Entity.Migrations.History;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using Domain.Bus;
 using MySql.Data.Entity;
@@ -7,9 +8,9 @@ using MySql.Data.Entity;
 namespace Service.Data
 {
     [DbConfigurationType(typeof(MySqlEFConfiguration))]
-    public class BusContext : DbContext
+    public class AppDbContext : DbContext
     {
-        public BusContext() : base("TriopodeaDb") { }
+        public AppDbContext() : base("TriopodeaDb") { }
         public DbSet<Company> Companies { get; set; }
         public DbSet<BusType> BuseTypes { get; set; }
         public DbSet<SeatFormat> SeatFormats { get; set; }
@@ -21,10 +22,7 @@ namespace Service.Data
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //remove auto pluralization of table names
-            //modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-
-            //schedule configurations
+            //bus schedule configurations
             //journeyFrom foreign key
             modelBuilder.Entity<Schedule>()
                 .HasRequired(s => s.JourneyFrom)
@@ -47,7 +45,7 @@ namespace Service.Data
             modelBuilder.Entity<Schedule>().ToTable("bus_schedule");
             modelBuilder.Entity<Ticket>().ToTable("bus_ticket");
             modelBuilder.Entity<Order>().ToTable("bus_ticket_order");
-
+            
             // remove one to many cascade convention
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
         }

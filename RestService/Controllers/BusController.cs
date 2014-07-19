@@ -6,6 +6,7 @@ using Service.BusDto;
 
 namespace RestService.Controllers
 {
+    [RoutePrefix("service/bus")]
     public class BusController : ApiController
     {
         // the bus service interface
@@ -17,6 +18,7 @@ namespace RestService.Controllers
         
         //get all locations
         //Route: service/bus/locations
+        [Authorize]
         [HttpGet]
         public IEnumerable<LocationDto> Locations()
         {
@@ -32,7 +34,7 @@ namespace RestService.Controllers
         //search for schedules
         //Route: service/bus/schedules/{from location id}/{to location id}/{departure time}
         [HttpGet]
-        [Route("service/Bus/Schedules/{fromId}/{toId}/{departure}")]
+        [Route("Schedules/{fromId}/{toId}/{departure}")]
         public IEnumerable<ResultDto> Search(int fromId, int toId, string departure)
         {
             var query = new SearchDto

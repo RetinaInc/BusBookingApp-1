@@ -71,10 +71,9 @@
     <Compile Include="BusDto\SeatDto.cs" />
     <Compile Include="BusDto\SeatSelectionDto.cs" />
     <Compile Include="Bus\BusService.cs" />
-    <Compile Include="Data\BusContext.cs" />
+    <Compile Include="Data\AppDbContext.cs" />
     <Compile Include="Data\InitializeDb.cs" />
     <Compile Include="Bus\IBusService.cs" />
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\GenericRepository.cs" />
     <Compile Include="Repository\UnitOfWork.cs" />
