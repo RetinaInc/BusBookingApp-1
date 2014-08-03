@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Service.BusDto;
+using Service.CommonDto;
 
 namespace Service.Bus
 {
@@ -15,9 +16,10 @@ namespace Service.Bus
         // get a specific schedule
         SeatSelectionDto GetSchedule(int scheduleId);
         // order a ticket
-        OrderDto Order(string seats, int scheduleId, string customer);
-        // buy a ticket
-        void BuyTicket(string seats, int scheduleId, string customer);
+        CartDto AddToCart(CartDto cart, SelectedSeatsDto seats);
+        //OrderDto Order(string seats, int scheduleId, string customer);
+        // buy a ticket/confirm order
+        void BuyTicket(CartDto cart);
         
     }
 }

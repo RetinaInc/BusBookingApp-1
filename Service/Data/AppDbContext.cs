@@ -1,16 +1,18 @@
 ﻿using System.Data.Entity;
-using System.Data.Entity.Migrations.History;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using Domain.Bus;
+using Domain.Common;
 using MySql.Data.Entity;
 
 
 namespace Service.Data
 {
-    [DbConfigurationType(typeof(MySqlEFConfiguration))]
+    //[DbConfigurationType(typeof(MySqlEFConfiguration))]
     public class AppDbContext : DbContext
     {
-        public AppDbContext() : base("TriopodeaDb") { }
+        public AppDbContext() : base("TripodeaDb") { }
+
+        // bus entities start
         public DbSet<Company> Companies { get; set; }
         public DbSet<BusType> BuseTypes { get; set; }
         public DbSet<SeatFormat> SeatFormats { get; set; }
@@ -18,7 +20,11 @@ namespace Service.Data
         public DbSet<Location> Locations { get; set; }
         public DbSet<Schedule> Schedules { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
+        // bus entities end
+
+        // common entities start
         public DbSet<Order> Orders { get; set; }
+        // common entities end
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -36,7 +42,8 @@ namespace Service.Data
                     .HasForeignKey(s => s.JourneyToId)
                     .WillCascadeOnDelete(false);
 
-            //set table names
+            // set table names
+            // table name for bus module
             modelBuilder.Entity<Company>().ToTable("bus_company");
             modelBuilder.Entity<BusType>().ToTable("bus_type");
             modelBuilder.Entity<SeatFormat>().ToTable("bus_seat_format");
@@ -44,7 +51,9 @@ namespace Service.Data
             modelBuilder.Entity<Location>().ToTable("bus_location");
             modelBuilder.Entity<Schedule>().ToTable("bus_schedule");
             modelBuilder.Entity<Ticket>().ToTable("bus_ticket");
-            modelBuilder.Entity<Order>().ToTable("bus_ticket_order");
+            
+            // table names for common
+            modelBuilder.Entity<Order>().ToTable("order");
             
             // remove one to many cascade convention
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();

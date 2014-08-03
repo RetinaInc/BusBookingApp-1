@@ -1,14 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Domain.Common;
 
 namespace Domain.Bus
 {
-    public class Order
+    public class TicketOrder : Order
     {
-        [Key]
-        public virtual int OrderId { get; set; }
-        public virtual string Customer { get; set; }
-        public int ScheduleId { get; set; }
         public virtual ICollection<Ticket> Tickets { get; set; }
     }
 }

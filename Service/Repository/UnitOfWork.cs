@@ -1,5 +1,6 @@
 ﻿using System;
 using Domain.Bus;
+using Domain.Common;
 using Service.Data;
 
 namespace Service.Repository

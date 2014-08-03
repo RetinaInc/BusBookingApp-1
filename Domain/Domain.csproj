@@ -49,17 +49,16 @@
     <Compile Include="Bus\BusType.cs" />
     <Compile Include="Bus\Company.cs" />
     <Compile Include="Bus\Location.cs" />
-    <Compile Include="Bus\Order.cs" />
+    <Compile Include="Bus\TicketOrder.cs" />
     <Compile Include="Bus\Schedule.cs" />
     <Compile Include="Bus\Seat.cs" />
     <Compile Include="Bus\SeatFormat.cs" />
     <Compile Include="Bus\Ticket.cs" />
+    <Compile Include="Common\Order.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="ClassDiagram1.cd" />
-    <None Include="DomainMap.dgml" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

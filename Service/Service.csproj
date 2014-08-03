@@ -65,21 +65,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusDto\LocationDto.cs" />
-    <Compile Include="BusDto\OrderDto.cs" />
+    <Compile Include="BusDto\SelectedSeatsDto.cs" />
+    <Compile Include="BusDto\TicketOrderDto.cs" />
     <Compile Include="BusDto\ResultDto.cs" />
     <Compile Include="BusDto\SearchDto.cs" />
     <Compile Include="BusDto\SeatDto.cs" />
     <Compile Include="BusDto\SeatSelectionDto.cs" />
     <Compile Include="Bus\BusService.cs" />
+    <Compile Include="CommonDto\CartDto.cs" />
+    <Compile Include="CommonDto\OrderDto.cs" />
     <Compile Include="Data\AppDbContext.cs" />
     <Compile Include="Data\InitializeDb.cs" />
     <Compile Include="Bus\IBusService.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\GenericRepository.cs" />
     <Compile Include="Repository\UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
