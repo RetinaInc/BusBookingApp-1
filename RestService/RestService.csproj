@@ -149,9 +149,9 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Authentication\AccountBindingModels.cs" />
-    <Compile Include="Authentication\AccountViewModels.cs" />
-    <Compile Include="Authentication\IdentityModels.cs" />
+    <Compile Include="AuthenticationModels\AccountBindingModels.cs" />
+    <Compile Include="AuthenticationModels\AccountViewModels.cs" />
+    <Compile Include="AuthenticationModels\IdentityModels.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BusController.cs" />
     <Compile Include="Controllers\CartController.cs" />

@@ -74,6 +74,7 @@
     <Compile Include="Bus\BusService.cs" />
     <Compile Include="CommonDto\CartDto.cs" />
     <Compile Include="CommonDto\OrderDto.cs" />
+    <Compile Include="CommonDto\OrderType.cs" />
     <Compile Include="Data\AppDbContext.cs" />
     <Compile Include="Data\InitializeDb.cs" />
     <Compile Include="Bus\IBusService.cs" />

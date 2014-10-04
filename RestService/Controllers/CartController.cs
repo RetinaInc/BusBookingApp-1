@@ -1,4 +1,4 @@
-﻿using System.Web;
+﻿using System.Collections.ObjectModel;
 using System.Web.Http;
 using Microsoft.AspNet.Identity;
 using Service.Bus;
@@ -15,11 +15,6 @@ namespace RestService.Controllers
         private readonly IBusService _busService;
         public static CartDto UserCart = new CartDto();
 
-        public CartController()
-        {
-            UserCart.UserId = User.Identity.GetUserId();
-        }
-
         public CartController(IBusService busService)
         {
             _busService = busService;
@@ -28,6 +23,14 @@ namespace RestService.Controllers
         [HttpPost]
         public CartDto AddTicket(SelectedSeatsDto seats)
         {
+            // check if this is the first time the car is initiated
+            if (UserCart.UserId == null && UserCart.Orders == null)
+            {
+                UserCart.UserId = User.Identity.GetUserId();
+                UserCart.Orders = new Collection<OrderDto>();
+            }
+            
+
             UserCart = _busService.AddToCart(UserCart, seats);
             return UserCart;
         }

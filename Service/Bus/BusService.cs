@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Service.BusDto;
 using Domain.Bus;
@@ -121,13 +122,32 @@ namespace Service.Bus
         //}
         public CartDto AddToCart(CartDto cart, SelectedSeatsDto seats)
         {
-            var order = new TicketOrderDto
+            // check if the order already exists or we'd have to create a new one
+            var oldOrder = (ICollection<TicketOrderDto>)cart.Orders.Where(o => o.OrderType == OrderType.BusTicket);
+            TicketOrderDto oldTicketOrder;
+            if (oldOrder.Count >= 0)
             {
-                ScheduleId = seats.ScheduleId,
-                LocationInfo = seats.LocationInfo,
-                Seats = seats.Seats
-            };
-            cart.Orders.Add(order);
+                oldTicketOrder = oldOrder.FirstOrDefault(o => o.ScheduleId == seats.ScheduleId);
+                if (oldTicketOrder != null)
+                {
+                    cart.Orders.Remove(oldTicketOrder);
+                    oldTicketOrder.Seats.ToList().AddRange(seats.Seats);
+                    cart.Orders.Add(oldTicketOrder);
+                }
+            }
+            else
+            {
+                var order = new TicketOrderDto
+                {
+                    OrderType = OrderType.BusTicket,
+                    ScheduleId = seats.ScheduleId,
+                    LocationInfo = seats.LocationInfo,
+                    Seats = seats.Seats
+                };
+
+                cart.Orders.Add(order);
+            }
+
             return cart;
         }
 
@@ -138,15 +158,15 @@ namespace Service.Bus
             // create tickets
             foreach (var orderDto in cart.Orders)
             {
-                var ticketOrderDto = (TicketOrderDto) orderDto;
+                var ticketOrderDto = (TicketOrderDto)orderDto;
                 var scheduleId = ticketOrderDto.ScheduleId;
                 // check and create tickets
                 foreach (var newTicket in (from seat in ticketOrderDto.Seats
-                    let seatNumber = seat.SeatNumber
-                    let existingSeat = _unitOfWork.TicketRepository.Get(t => t.ScheduleId == scheduleId).
-                        FirstOrDefault(t => t.SeatNumber == seatNumber)
-                    where existingSeat == null
-                    select seat).Select(seat => new Ticket
+                                           let seatNumber = seat.SeatNumber
+                                           let existingSeat = _unitOfWork.TicketRepository.Get(t => t.ScheduleId == scheduleId).
+                                               FirstOrDefault(t => t.SeatNumber == seatNumber)
+                                           where existingSeat == null
+                                           select seat).Select(seat => new Ticket
                     {
                         ScheduleId = scheduleId,
                         SeatClass = seat.SeatClass,

@@ -2,7 +2,6 @@
 using System.Data.Entity.ModelConfiguration.Conventions;
 using Domain.Bus;
 using Domain.Common;
-using MySql.Data.Entity;
 
 
 namespace Service.Data

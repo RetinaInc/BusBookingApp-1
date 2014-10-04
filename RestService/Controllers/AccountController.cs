@@ -12,8 +12,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
-using RestService.App_Start;
-using RestService.Authentication;
+using RestService.AuthenticationModels;
 using RestService.Providers;
 using RestService.Results;
 

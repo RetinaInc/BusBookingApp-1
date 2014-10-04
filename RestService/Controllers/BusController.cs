@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Web;
 using System.Web.Http;
 using Microsoft.AspNet.Identity;
 using Service.Bus;
@@ -68,12 +65,6 @@ namespace RestService.Controllers
         public string GetUserId()
         {
             return User.Identity.GetUserId();
-            //return User.Identity.
-            /*ClaimsIdentity ci = (ClaimsIdentity)HttpContext.Current.User.Identity;
-            var usr = ci.Claims.Where(c => c.Type == "sub").FirstOrDefault();
-            return usr.Value;*/
-
-
         }
 
         protected override void Dispose(bool disposing)

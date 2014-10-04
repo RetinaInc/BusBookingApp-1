@@ -1,14 +1,15 @@
-﻿using Microsoft.Owin;
+﻿using System;
+using System.Web.Http;
+using Microsoft.Owin;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
-using System;
-using System.Web.Http;
-using RestService.Authentication;
+using RestService;
+using RestService.AuthenticationModels;
 using RestService.Providers;
 
-[assembly: OwinStartup(typeof(RestService.App_Start.Startup))]
+[assembly: OwinStartup(typeof(Startup))]
 
-namespace RestService.App_Start
+namespace RestService
 {
     public class Startup
     {
